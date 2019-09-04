@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.flickrkitten.model.Item;
 import com.example.flickrkitten.model.Response;
 import com.example.flickrkitten.model.datasource.remote.ImageAsyncTask;
-import com.example.flickrkitten.model.datasource.remote.OkHttpHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
