@@ -1,5 +1,6 @@
 package com.example.flickrkitten;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -94,8 +96,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                             .setItems(new CharSequence[]{"Full Image", "Thumbnail"},
                                 new MyDialogListener()) 
                             .create().show();
-
-
                     return false;
         }
 
@@ -105,20 +105,35 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(TAG, "onClick: ");
-
+                final Drawable imageDrawable = itemImageView.getDrawable();
                 switch (i) {
                     case 0:
                         Intent intent = new Intent(context,FullImageActivity.class);
                         Bundle bundle = new Bundle();
-                        Drawable d = itemImageView.getDrawable();
-                        byte[] imgBytes = drawableToByteArray(d);
+                        final byte[] imgBytes = drawableToByteArray(imageDrawable);
                         bundle.putByteArray("image",imgBytes);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         break;
                     case 1:
-                        break;
+                        final AlertDialog thumbnailDialog = new AlertDialog.Builder(context).create();
+                        LayoutInflater inflater = LayoutInflater.from(context);
+                        @SuppressLint("InflateParams")
+                        View dialogLayout = inflater.inflate(R.layout.dialog_layout,null);
+                        thumbnailDialog.setView(dialogLayout);
+                        thumbnailDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+                        thumbnailDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface d) {
+                                ImageView thumbnailIV = thumbnailDialog.findViewById(R.id.dialog_thumbnail);
+                                Bitmap bmp = ((BitmapDrawable)imageDrawable).getBitmap();
+                                thumbnailIV.setImageBitmap(bmp);
+                            }
+                        });
+                        thumbnailDialog.show();
                 }
+
             }
 
             private byte[] drawableToByteArray(Drawable d) {
