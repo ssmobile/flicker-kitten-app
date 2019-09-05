@@ -1,19 +1,24 @@
 package com.example.flickrkitten;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 
+import com.example.flickrkitten.model.Item;
 import com.example.flickrkitten.model.Response;
 import com.example.flickrkitten.model.datasource.remote.ImageAsyncTask;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "TAG_MainActivity";
+//    private static final String TAG = "TAG_MainActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe
     public void onImageEvent(Response response) {
-
         if (response != null) {
-            Log.d(TAG, "onImageEvent: response: " + response.toString());
+            populateRecyclerView(response.getItems());
         }
+    }
+
+    private void populateRecyclerView(List<Item> itemList) {
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new ImageAdapter(itemList,this));
     }
 }

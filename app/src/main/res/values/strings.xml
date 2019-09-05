@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FlickrKitten</string>
+    <string name="flickr_image">Flickr Image</string>
+    <string name="title">TITLE</string>
+    <string name="full_image_desc">Full size Flickr Image</string>
+
+    <string-array name="dialog_options">
+        <item name="full_image">Full Image</item>
+        <item name="thumbnail">Thumbnail</item>
+    </string-array>
 </resources>
